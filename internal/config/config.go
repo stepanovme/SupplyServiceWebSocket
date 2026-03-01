@@ -14,6 +14,9 @@ type Config struct {
 	WSReadBufferSize  int
 	WSWriteBufferSize int
 	WatcherPoll       time.Duration
+	TLSEnabled        bool
+	TLSCertFile       string
+	TLSKeyFile        string
 	DB                DBGroup
 }
 
@@ -46,6 +49,9 @@ func Load(path string) (Config, error) {
 		WSReadBufferSize:  getEnvAsInt("WS_READ_BUFFER_SIZE", 1024),
 		WSWriteBufferSize: getEnvAsInt("WS_WRITE_BUFFER_SIZE", 1024),
 		WatcherPoll:       watcherPoll,
+		TLSEnabled:        getEnvAsBool("TLS_ENABLED", false),
+		TLSCertFile:       getEnv("TLS_CERT_FILE", ""),
+		TLSKeyFile:        getEnv("TLS_KEY_FILE", ""),
 		DB: DBGroup{
 			Authorization: loadDBConfig("AUTH"),
 			Supply:        loadDBConfig("SUPPLY"),
@@ -85,6 +91,22 @@ func getEnvAsInt(key string, fallback int) int {
 	}
 
 	return parsed
+}
+
+func getEnvAsBool(key string, fallback bool) bool {
+	value, ok := os.LookupEnv(key)
+	if !ok {
+		return fallback
+	}
+
+	switch strings.ToLower(strings.TrimSpace(value)) {
+	case "1", "true", "yes", "on":
+		return true
+	case "0", "false", "no", "off":
+		return false
+	default:
+		return fallback
+	}
 }
 
 func loadDotEnv(path string) error {

@@ -40,6 +40,19 @@ HTTP endpoints:
 - `GET /health`
 - `GET /ws`
 
+### WSS (TLS)
+
+Если есть `cert.pem` и `key.pem`, включи в `.env`:
+
+```env
+TLS_ENABLED=true
+TLS_CERT_FILE=./cert.pem
+TLS_KEY_FILE=./key.pem
+```
+
+Тогда сервер поднимется по HTTPS/WSS на `APP_PORT`.
+Пример WebSocket URL: `wss://your-domain/ws`
+
 ## SQL инфраструктура событий
 
 - Файл миграции: `migrations/001_request_events.sql`

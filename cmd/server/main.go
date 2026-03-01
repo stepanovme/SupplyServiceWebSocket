@@ -62,6 +62,17 @@ func main() {
 		}
 	}()
 
+	if cfg.TLSEnabled {
+		if cfg.TLSCertFile == "" || cfg.TLSKeyFile == "" {
+			log.Fatal("TLS enabled but TLS_CERT_FILE or TLS_KEY_FILE is empty")
+		}
+		log.Printf("websocket server started with TLS at :%s", cfg.AppPort)
+		if err := server.ListenAndServeTLS(cfg.TLSCertFile, cfg.TLSKeyFile); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("listen tls: %v", err)
+		}
+		return
+	}
+
 	log.Printf("websocket server started at :%s", cfg.AppPort)
 	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		log.Fatalf("listen: %v", err)
