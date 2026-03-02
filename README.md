@@ -45,6 +45,7 @@ HTTP endpoints:
 Если есть `cert.pem` и `key.pem`, включи в `.env`:
 
 ```env
+APP_HOST=0.0.0.0
 TLS_ENABLED=true
 TLS_CERT_FILE=./cert.pem
 TLS_KEY_FILE=./key.pem
@@ -52,6 +53,22 @@ TLS_KEY_FILE=./key.pem
 
 Тогда сервер поднимется по HTTPS/WSS на `APP_PORT`.
 Пример WebSocket URL: `wss://your-domain/ws`
+
+### Привязка к IP
+
+Можно явно указать интерфейс через `APP_HOST`:
+
+```env
+APP_HOST=127.0.0.1  # только локально
+APP_PORT=8080
+```
+
+или
+
+```env
+APP_HOST=0.0.0.0    # слушать все интерфейсы
+APP_PORT=8080
+```
 
 ## SQL инфраструктура событий
 

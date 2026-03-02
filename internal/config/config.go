@@ -10,6 +10,7 @@ import (
 )
 
 type Config struct {
+	AppHost           string
 	AppPort           string
 	WSReadBufferSize  int
 	WSWriteBufferSize int
@@ -45,6 +46,7 @@ func Load(path string) (Config, error) {
 	}
 
 	cfg := Config{
+		AppHost:           getEnv("APP_HOST", "0.0.0.0"),
 		AppPort:           getEnv("APP_PORT", "8080"),
 		WSReadBufferSize:  getEnvAsInt("WS_READ_BUFFER_SIZE", 1024),
 		WSWriteBufferSize: getEnvAsInt("WS_WRITE_BUFFER_SIZE", 1024),
